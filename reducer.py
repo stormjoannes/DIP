@@ -7,6 +7,10 @@ totale_matrix = np.zeros((28, 28))
 for matrix in sys.stdin:
     matrix = ast.literal_eval(matrix)
     totale_matrix += matrix
-    totale_matrix /= 2
+
+total = np.sum(totale_matrix)
+for row in range(len(totale_matrix)):
+    for index in range(len(totale_matrix)):
+        totale_matrix[row][index] = totale_matrix[row][index] / total
 
 print(totale_matrix)
