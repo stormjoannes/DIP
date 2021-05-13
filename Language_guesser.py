@@ -70,6 +70,7 @@ input_text = open('data/test_file.txt', encoding='utf8')
 characters = 'abcdefghijklmnopqrstuvwxyz '
 
 result = text_scanner(input_text, Dutch_matrix, English_matrix, characters)
+
 expected_result = (73, 119)
 accuracy = 100 - (abs(result[1] - expected_result[1]) / sum(expected_result) * 100)
 print(f'Result: \nDutch sentences: {result[0]} \nEnglish sentences: {result[1]}\n')

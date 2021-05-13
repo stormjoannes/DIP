@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import ast
 
+
 totale_matrix = np.zeros((28, 28))
 
 for matrix in sys.stdin:
@@ -13,4 +14,4 @@ for row in range(len(totale_matrix)):
     for index in range(len(totale_matrix)):
         totale_matrix[row][index] = totale_matrix[row][index] / total
 
-print(totale_matrix)
+np.save('matrices/matrix', totale_matrix)
