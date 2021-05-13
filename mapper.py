@@ -1,7 +1,6 @@
-import numpy as np
 import sys
+import numpy as np
 
-characters = 'abcdefghijklmnopqrstuvwxyz '
 
 def create_matrix(characters, line):
     matrix = np.zeros((len(characters) + 1, len(characters) + 1))
@@ -23,8 +22,10 @@ def create_matrix(characters, line):
         matrix[index_letter][index_opvolgende_letter] += 1
     return matrix
 
+characters = 'abcdefghijklmnopqrstuvwxyz '
 
 for line in sys.stdin:
     matrix = create_matrix(characters, line)
-
     print(matrix.tolist())
+
+

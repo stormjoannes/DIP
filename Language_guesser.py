@@ -1,5 +1,25 @@
-from DIP.tweede_opdracht.mapper import create_matrix
 import numpy as np
+
+
+def create_matrix(characters, line):
+    matrix = np.zeros((len(characters) + 1, len(characters) + 1))
+
+    for i in range(0, len(line) - 1):
+        letter = line[i].lower()
+        opvolgende_letter = line[i + 1].lower()
+
+        if letter in characters:
+            index_letter = characters.index(letter)
+        else:
+            index_letter = 27
+
+        if opvolgende_letter in characters:
+            index_opvolgende_letter = characters.index(opvolgende_letter)
+        else:
+            index_opvolgende_letter = 27
+
+        matrix[index_letter][index_opvolgende_letter] += 1
+    return matrix
 
 
 def convert_to_percentage(characters, input_line):
@@ -12,7 +32,7 @@ def convert_to_percentage(characters, input_line):
     return matrix
 
 
-def language_choser(dutch_matrix, eng_matrix, test_matrix):
+def language_chooser(dutch_matrix, eng_matrix, test_matrix):
     dutch_loss = 0
     eng_loss = 0
 
@@ -24,7 +44,6 @@ def language_choser(dutch_matrix, eng_matrix, test_matrix):
 
             dutch_loss += abs(dutch_perc - test_perc)
             eng_loss += abs(eng_perc - test_perc)
-
     return "dutch" if dutch_loss < eng_loss else "english"
 
 
@@ -35,17 +54,22 @@ def text_scanner(input_text, dutch_matrix, eng_matrix, characters):
     for test_input_line in input_text:
         test_matrix = convert_to_percentage(characters, test_input_line)
 
-        result = language_choser(dutch_matrix, eng_matrix, test_matrix)
+        result = language_chooser(dutch_matrix, eng_matrix, test_matrix)
 
         if result == "dutch":
             dutch_count += 1
         else:
             eng_count += 1
-
     return dutch_count, eng_count
 
 
-result = text_scanner(input_text, dutch_matrix, eng_matrix, characters)
+Dutch_matrix = np.load('matrixes/Dutch_matrix.npy')
+English_matrix = np.load('matrixes/English_matrix.npy')
+input_text = open('test_file', encoding='utf8')
+
+characters = 'abcdefghijklmnopqrstuvwxyz '
+
+result = text_scanner(input_text, Dutch_matrix, English_matrix, characters)
 print(result)
 expected_result = (73, 119)
 accuracy = 100 - (abs(result[1] - expected_result[1]) / sum(expected_result) * 100)
