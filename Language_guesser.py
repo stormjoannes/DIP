@@ -63,8 +63,8 @@ def text_scanner(input_text, dutch_matrix, eng_matrix, characters):
     return dutch_count, eng_count
 
 
-Dutch_matrix = np.load('matrixes/Dutch_matrix.npy')
-English_matrix = np.load('matrixes/English_matrix.npy')
+Dutch_matrix = np.load('matrices/Dutch_matrix.npy')
+English_matrix = np.load('matrices/English_matrix.npy')
 input_text = open('data/test_file.txt', encoding='utf8')
 
 characters = 'abcdefghijklmnopqrstuvwxyz '

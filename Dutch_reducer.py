@@ -14,4 +14,4 @@ for row in range(len(totale_matrix)):
     for index in range(len(totale_matrix)):
         totale_matrix[row][index] = totale_matrix[row][index] / total
 
-np.save('matrixes/Dutch_matrix', totale_matrix)
+np.save('matrices/Dutch_matrix', totale_matrix)
