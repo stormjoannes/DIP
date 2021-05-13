@@ -3,29 +3,33 @@ import numpy as np
 
 
 def create_matrix(characters, line):
+    """"Create a matrix for each letter in the alfabet from the given line."""
+    # Make empty matrix
     matrix = np.zeros((len(characters) + 1, len(characters) + 1))
 
+    # Loop thru all characters in the given line and fill the matrix
     for i in range(0, len(line) - 1):
         letter = line[i].lower()
-        opvolgende_letter = line[i + 1].lower()
+        following_character = line[i + 1].lower()
 
         if letter in characters:
-            index_letter = characters.index(letter)
+            index_character = characters.index(letter)
         else:
-            index_letter = 27
+            index_character = 27
 
-        if opvolgende_letter in characters:
-            index_opvolgende_letter = characters.index(opvolgende_letter)
+        if following_character in characters:
+            index_following_character = characters.index(following_character)
         else:
-            index_opvolgende_letter = 27
+            index_following_character = 27
 
-        matrix[index_letter][index_opvolgende_letter] += 1
+        matrix[index_character][index_following_character] += 1
     return matrix
+
 
 characters = 'abcdefghijklmnopqrstuvwxyz '
 
-for line in sys.stdin:
-    matrix = create_matrix(characters, line)
-    print(matrix.tolist())
-
-
+# Don't run this if file is imported
+if __name__ == "__main__":
+    for line in sys.stdin:
+        matrix = create_matrix(characters, line)
+        print(matrix.tolist())
