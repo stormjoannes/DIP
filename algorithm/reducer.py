@@ -5,9 +5,10 @@ from General_definitions import convert_to_percentage
 
 
 def reduce():
-    """"Loop thru text files and add all matrices to each other. this way you get a matrix that represents a language"""
+    """"Loop through text files and add all matrices to each other. this way you get a matrix that represents a language"""
     total_matrix = np.zeros((28, 28))
 
+    # Loop through all matrices
     for matrix in sys.stdin:
         matrix = ast.literal_eval(matrix)
         total_matrix += matrix
