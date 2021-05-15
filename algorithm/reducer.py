@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import ast
+from General_definitions import convert_to_percentage
 
 
 def reduce():
@@ -11,10 +12,7 @@ def reduce():
         matrix = ast.literal_eval(matrix)
         total_matrix += matrix
 
-    total = np.sum(total_matrix)
-    for row in range(len(total_matrix)):
-        for index in range(len(total_matrix)):
-            total_matrix[row][index] = total_matrix[row][index] / total
+    total_matrix = convert_to_percentage(total_matrix)
 
     np.save('matrices/matrix', total_matrix)
 

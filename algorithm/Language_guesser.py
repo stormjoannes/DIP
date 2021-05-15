@@ -1,64 +1,63 @@
 import numpy as np
-from mapper import create_matrix, characters
+from General_definitions import create_matrix
+from General_definitions import convert_to_percentage
 
 
-def convert_to_percentage(characters, input_line):
-    """"Convert all values in matrix to percentage based on part of the total."""
-    matrix = create_matrix(characters, input_line)
-
-    total = np.sum(matrix)
-    for row in range(len(matrix)):
-        for index in range(len(matrix)):
-            matrix[row][index] = matrix[row][index] / total
-    return matrix
-
-
-def language_chooser(dutch_matrix, eng_matrix, test_matrix):
+def language_chooser(first_matrix, second_matrix, test_matrix):
     """Compare given test line matrix with language matrices and return the chosen language."""
-    dutch_loss = 0
-    eng_loss = 0
+    first_matrix_loss = 0
+    second_matrix_loss = 0
 
-    for row in range(len(dutch_matrix)):
+    for row in range(len(first_matrix)):
         # Get percentage at current index on matrix
-        for index in range(len(dutch_matrix)):
-            dutch_perc = dutch_matrix[row][index]
-            eng_perc = eng_matrix[row][index]
-            test_perc = test_matrix[row][index]
+        for index in range(len(first_matrix)):
+            first_matrix_perc = first_matrix[row][index]
+            second_matrix_perc = second_matrix[row][index]
+            test_matrix_perc = test_matrix[row][index]
 
-            # Add difference from percentile from character from line to Dutch or English loss
-            dutch_loss += abs(dutch_perc - test_perc)
-            eng_loss += abs(eng_perc - test_perc)
+            # Calculate the difference in percentage for each spot in the matrices for each matrix
+            first_matrix_loss += abs(first_matrix_perc - test_matrix_perc)
+            second_matrix_loss += abs(second_matrix_perc - test_matrix_perc)
 
-    # The language with lowest loss has least difference with sentence structure and is chosen
-    return "dutch" if dutch_loss < eng_loss else "english"
+    # The language with the lowest loss has the least difference in sentence structure and is therefore chosen
+    return 'first' if first_matrix_loss < second_matrix_loss else "second"
 
 
-def text_scanner(input_text, dutch_matrix, eng_matrix, characters):
-    """Loop thru all lines and sum the amount a language is chosen for a result."""
-    dutch_count = 0
-    eng_count = 0
+def text_scanner(input_text, first_matrix, second_matrix, characters):
+    """Loop through all lines and sum the amount a language is chosen for a result."""
+    first_matrix_count = 0
+    second_matrix_count = 0
 
     for test_input_line in input_text:
-        test_matrix = convert_to_percentage(characters, test_input_line)
-        result = language_chooser(dutch_matrix, eng_matrix, test_matrix)
+        test_matrix = create_matrix(characters, test_input_line)
+        test_matrix = convert_to_percentage(test_matrix)
+        result = language_chooser(first_matrix, second_matrix, test_matrix)
 
-        if result == "dutch":
-            dutch_count += 1
+        if result == "first":
+            first_matrix_count += 1
         else:
-            eng_count += 1
-    return dutch_count, eng_count
+            second_matrix_count += 1
+    return first_matrix_count, second_matrix_count
 
 
-# Load Dutch and English matrix and load input_text
-Dutch_matrix = np.load('matrices/Dutch_matrix.npy')
-English_matrix = np.load('matrices/English_matrix.npy')
-input_text = open('data/test_file.txt', encoding='utf8')
+def main():
+    """Load all necessary text files and calculate the accuracy, print the results in a good format"""
+    # Load the two matrices matrix we want to compare with and the test file
+    first_matrix = np.load('matrices/Dutch_matrix.npy')
+    second_matrix = np.load('matrices/English_matrix.npy')
+    input_text = open('data/test_file.txt', encoding='utf8')
 
-result = text_scanner(input_text, Dutch_matrix, English_matrix, characters)
+    characters = 'abcdefghijklmnopqrstuvwxyz '
 
-# Print formatted results
-expected_result = (73, 119)
-accuracy = 100 - (abs(result[1] - expected_result[1]) / sum(expected_result) * 100)
-print(f'Result: \nDutch sentences: {result[0]} \nEnglish sentences: {result[1]}\n')
-print(f'Expected result = Dutch sentences: {expected_result[0]}, English sentences: {expected_result[1]}')
-print('Accuracy: ' + str(accuracy) + '%')
+    result = text_scanner(input_text, first_matrix, second_matrix, characters)
+
+    # Print formatted results
+    expected_result = (73, 119)
+    accuracy = 100 - (abs(result[1] - expected_result[1]) / sum(expected_result) * 100)
+    print(f'Result: \nDutch sentences: {result[0]} \nEnglish sentences: {result[1]}\n')
+    print(f'Expected result = Dutch sentences: {expected_result[0]}, English sentences: {expected_result[1]}')
+    print('Accuracy: ' + str(accuracy) + '%')
+
+
+main()
+
